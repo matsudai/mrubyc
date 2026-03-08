@@ -133,6 +133,12 @@ inline static void preempt_running_task(void)
 
 
 //================================================================
+/*! Tick timer callback function.
+*/
+extern __attribute__((weak)) void mrbc_tick_callback(void);
+
+
+//================================================================
 /*! Tick timer interrupt handler.
 
 */
@@ -176,6 +182,8 @@ void mrbc_tick(void)
 
     if( flag_preemption ) preempt_running_task();
   }
+
+  if( mrbc_tick_callback ) mrbc_tick_callback();
 }
 
 
