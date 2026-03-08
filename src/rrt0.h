@@ -109,6 +109,7 @@ typedef struct RMutex {
 /***** Function prototypes **************************************************/
 //@cond
 void mrbc_tick(void);
+void mrbc_set_tick_callback(void (*callback)(void));
 mrbc_tcb *mrbc_tcb_new(int regs_size, enum MrbcTaskState task_state, int priority);
 mrbc_tcb *mrbc_create_task(const void *byte_code, mrbc_tcb *tcb);
 int mrbc_delete_task(mrbc_tcb *tcb);
