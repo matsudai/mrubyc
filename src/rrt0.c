@@ -44,7 +44,7 @@ static mrbc_tcb *task_queue_[NUM_TASK_QUEUE];
 #define q_suspended_ (task_queue_[3])
 static volatile uint32_t tick_;
 static volatile uint32_t wakeup_tick_ = (1 << 16); // no significant meaning.
-static void (*tick_callback_)(void) = NULL;
+static void (*task_switch_callback_)(void);
 
 
 /***** Global variables *****************************************************/
@@ -134,16 +134,6 @@ inline static void preempt_running_task(void)
 
 
 //================================================================
-/*! Set tick timer callback function.
-
-  @param  callback	callback function or NULL.
-*/
-void mrbc_set_tick_callback(void (*callback)(void))
-{
-  tick_callback_ = callback;
-}
-
-//================================================================
 /*! Tick timer interrupt handler.
 
 */
@@ -187,8 +177,6 @@ void mrbc_tick(void)
 
     if( flag_preemption ) preempt_running_task();
   }
-
-  if( tick_callback_ ) tick_callback_();
 }
 
 
@@ -431,6 +419,8 @@ int mrbc_run(void)
     /*
       Switch task.
     */
+    if( task_switch_callback_ ) task_switch_callback_();
+
     if( tcb->state == TASKSTATE_RUNNING ) {
       tcb->state = TASKSTATE_READY;
 
@@ -846,6 +836,17 @@ int mrbc_mutex_trylock( mrbc_mutex *mutex, mrbc_tcb *tcb )
 
   hal_enable_irq();
   return ret;
+}
+
+
+//================================================================
+/*! Set task switch callback function.
+
+  @param  callback	callback function or NULL.
+*/
+void mrbc_set_task_switch_callback(void (*callback)(void))
+{
+  task_switch_callback_ = callback;
 }
 
 

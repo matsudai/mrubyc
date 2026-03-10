@@ -109,7 +109,6 @@ typedef struct RMutex {
 /***** Function prototypes **************************************************/
 //@cond
 void mrbc_tick(void);
-void mrbc_set_tick_callback(void (*callback)(void));
 mrbc_tcb *mrbc_tcb_new(int regs_size, enum MrbcTaskState task_state, int priority);
 mrbc_tcb *mrbc_create_task(const void *byte_code, mrbc_tcb *tcb);
 int mrbc_delete_task(mrbc_tcb *tcb);
@@ -128,6 +127,7 @@ mrbc_mutex *mrbc_mutex_init(mrbc_mutex *mutex);
 int mrbc_mutex_lock(mrbc_mutex *mutex, mrbc_tcb *tcb);
 int mrbc_mutex_unlock(mrbc_mutex *mutex, mrbc_tcb *tcb);
 int mrbc_mutex_trylock(mrbc_mutex *mutex, mrbc_tcb *tcb);
+void mrbc_set_task_switch_callback(void (*callback)(void));
 void mrbc_cleanup(void);
 void mrbc_init(void *heap_ptr, unsigned int size);
 void pq(const mrbc_tcb *p_tcb);
