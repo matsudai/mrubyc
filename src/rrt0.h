@@ -127,6 +127,7 @@ mrbc_mutex *mrbc_mutex_init(mrbc_mutex *mutex);
 int mrbc_mutex_lock(mrbc_mutex *mutex, mrbc_tcb *tcb);
 int mrbc_mutex_unlock(mrbc_mutex *mutex, mrbc_tcb *tcb);
 int mrbc_mutex_trylock(mrbc_mutex *mutex, mrbc_tcb *tcb);
+void mrbc_set_task_switch_callback(void (*callback)(void));
 void mrbc_cleanup(void);
 void mrbc_init(void *heap_ptr, unsigned int size);
 void pq(const mrbc_tcb *p_tcb);
